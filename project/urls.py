@@ -41,10 +41,11 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    # Route to API's
+    # Route to APIs
     path('authentication/', include('api.authentication.urls')),
     path('authenticated/', include('api.authenticated.urls')),
     path('user-management/', include('api.user_management.urls')),
+    path('public/', include('api.public.urls')),
     path('health-check', health_check_view),
 
     # Library: drf-yasg

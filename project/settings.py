@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'domain.users',
     'domain.guests',
     'domain.todos',
+    'domain.chatgpt',
     # Django Applications - API Endpoints
     'api.authentication',
     'api.authenticated',

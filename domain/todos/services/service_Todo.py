@@ -2,66 +2,72 @@ from django.utils import timezone
 from typing import List
 
 # Models
-from django.contrib.auth.models import User
-from ..models import Store
+from ..models import Todo
+from domain.guests.models import Guest
+
+# UUID
+import uuid
 
 import logging
 logger = logging.getLogger(__name__)
 
 
-def get_stores() -> List[Store]:
-    stores = Store.objects.all()
-    logger.info(f"{stores} fetched")
-    return stores
+def get_todos() -> List[Todo]:
+    todos = Todo.objects.all()
+    logger.info(f"{todos} fetched")
+    return todos
 
 
-def create_store(
-        user: User,
-        name: str,
-        contact_number: str,
-        address: str
-) -> Store:
-    store = Store.objects.create(
-        user=user,
-        name=name,
-        contact_number=contact_number,
-        address=address
+def get_todos_by_guest_id(guest_id: int) -> List[Todo]:
+    guest = Guest.objects.filter(id=guest_id).first()
+    todos = Todo.objects.filter(guest=guest).all()
+    logger.info(f"{len(todos)} todos fetched for guest UUID: {guest_id}")
+    return todos
+
+
+def delete_todo(todo: Todo) -> Todo:
+    todo.delete()
+    logger.info(f"{todo} has been deleted.")
+    return todo
+
+
+def create_todo(
+        guest: Guest,
+        title: str,
+        status: str,
+        notes: str = None,
+        due_date=None
+) -> Todo:
+
+    todo = Todo.objects.create(
+        guest=guest,
+        title=title,
+        status=status,
+        notes=notes,
+        due_date=due_date
     )
-    store.save()
-    logger.info(f"\"{store}\" has been created")
-    return store
+    todo.save()
+
+    logger.info(f"\"{todo.title}\" has been created")
+
+    return todo
 
 
-def get_store_by_id(store_id: int) -> Store:
-    store = Store.objects.filter(id=store_id).first()
-    if store:
-        logger.info(f"{store} fetched")
-        return store
-    return store
+def update_todo(
+        todo: Todo,
+        title: str,
+        status: str,
+        notes: str = None,
+        due_date=None
+) -> Todo:
+    todo.title = title
+    todo.status = status
+    todo.notes = notes
+    todo.due_date = due_date
+    todo.updated_at = timezone.now()
 
+    todo.save()
 
-def delete_store(store: Store) -> Store:
-    store.delete()
-    logger.info(f"{store} has been deleted.")
-    return store
+    logger.info(f"\"{todo}\" has been updated.")
 
-
-def update_store(
-        store: Store,
-        user: User,
-        name: str,
-        contact_number: str,
-        address: str
-) -> Store:
-    store.store = store
-    store.user = user
-    store.name = name
-    store.contact_number = contact_number
-    store.address = address
-    store.updated_at = timezone.now()
-
-    store.save()
-
-    logger.info(f"\"{store}\" has been updated.")
-
-    return store
+    return todo
