@@ -53,6 +53,28 @@ def create_todo(
     return todo
 
 
+def create_todo_with_guest_id(
+        guest_id: int,
+        title: str,
+        status: str,
+        notes: str = None,
+        due_date=None
+) -> Todo:
+
+    todo = Todo.objects.create(
+        guest_id=guest_id,
+        title=title,
+        status=status,
+        notes=notes,
+        due_date=due_date
+    )
+    todo.save()
+
+    logger.info(f"\"{todo.title}\" has been created")
+
+    return todo
+
+
 def update_todo(
         todo: Todo,
         title: str,

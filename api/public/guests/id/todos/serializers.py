@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 class ReadTodoSerializer(serializers.ModelSerializer):
 
     class Meta:
-        ref_name = "public.guests.todoss.ReadTodoSerializer"
+        ref_name = "public.guests.todos.ReadTodoSerializer"
         model = Todo
         fields = [
             'guest',
@@ -26,7 +26,7 @@ class ReadTodoSerializer(serializers.ModelSerializer):
 class CreateTodoSerializer(serializers.ModelSerializer):
 
     class Meta:
-        ref_name = "public.guests.todoss.CreateTodoSerializer"
+        ref_name = "public.guests.todos.CreateTodoSerializer"
         model = Todo
         fields = [
             'guest',
@@ -40,7 +40,7 @@ class CreateTodoSerializer(serializers.ModelSerializer):
 class PaginateReadTodoSerializer(serializers.Serializer):  # noqa
 
     class Meta:
-        ref_name = "public.guests.todoss.PaginateReadTodoSerializer"
+        ref_name = "public.guests.todos.PaginateReadTodoSerializer"
 
     count = serializers.IntegerField()
     next = serializers.URLField()
@@ -50,6 +50,6 @@ class PaginateReadTodoSerializer(serializers.Serializer):  # noqa
 
 class PaginateQueryReadTodoSerializer(serializers.Serializer):  # noqa
     class Meta:
-        ref_name = "public.guests.todoss.PaginateQueryReadTodoSerializer"
+        ref_name = "public.guests.todos.PaginateQueryReadTodoSerializer"
 
     page = serializers.IntegerField(required=False, help_text="A page number within the paginated result set.")
