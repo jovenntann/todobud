@@ -24,7 +24,7 @@ class OpenAiResponseSerializer(serializers.Serializer): # noqa
     class Meta:
         ref_name = "public.guests.chats.OpenAiResponseSerializer"
 
-    response = serializers.CharField(max_length=500)
+    response = serializers.CharField(max_length=500, allow_blank=True, allow_null=True)
     todos = TodoSerializer(many=True)
 
 

@@ -52,7 +52,7 @@ class GuestsIdChatsAPIView(APIView):
             notes = todo_dict['notes']
             due_date = todo_dict['due_date']
 
-            if action == "insert":
+            if action == "create":
                 create_todo_with_guest_id(
                     guest_id=guest_id,
                     title=title,
