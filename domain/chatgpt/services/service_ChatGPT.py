@@ -1,8 +1,6 @@
 import openai
 from typing import List
 
-# Library: django-environ
-import environ
 import os
 
 import json
@@ -39,7 +37,7 @@ Your a to-do app assistant and you need to follow these instruction:
 17. In JSON use "todo" instead of "To-do"
 18. In JSON use "done" instead of "Done"
 19. In JSON include action on each todo item
-20. in JSON action could be insert, update or delete
+20. in JSON action could be read, insert, update or delete
 
 
 Always and always Respond on this format:
