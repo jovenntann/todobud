@@ -13,6 +13,7 @@ class ReadTodoSerializer(serializers.ModelSerializer):
         ref_name = "public.guests.todos.ReadTodoSerializer"
         model = Todo
         fields = [
+            'id',
             'guest',
             'title',
             'status',

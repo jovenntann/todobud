@@ -5,11 +5,15 @@ from typing import List
 from ..models import Todo
 from domain.guests.models import Guest
 
-# UUID
-import uuid
 
 import logging
 logger = logging.getLogger(__name__)
+
+
+def get_todo_by_id(todo_id: int) -> Todo:
+    todo = Todo.objects.filter(id=todo_id).first()
+    logger.info(f"Todo with ID {todo_id} fetched")
+    return todo
 
 
 def get_todos() -> List[Todo]:
@@ -21,7 +25,7 @@ def get_todos() -> List[Todo]:
 def get_todos_by_guest_id(guest_id: int) -> List[Todo]:
     guest = Guest.objects.filter(id=guest_id).first()
     todos = Todo.objects.filter(guest=guest).all()
-    logger.info(f"{len(todos)} todos fetched for guest UUID: {guest_id}")
+    logger.info(f"{len(todos)} todos fetched for guest id: {guest_id}")
     return todos
 
 
