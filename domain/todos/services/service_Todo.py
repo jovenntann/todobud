@@ -24,7 +24,7 @@ def get_todos() -> List[Todo]:
 
 def get_todos_by_guest_id(guest_id: int) -> List[Todo]:
     guest = Guest.objects.filter(id=guest_id).first()
-    todos = Todo.objects.filter(guest=guest).all()
+    todos = Todo.objects.filter(guest=guest).order_by('-updated_at').all()
     logger.info(f"{len(todos)} todos fetched for guest id: {guest_id}")
     return todos
 

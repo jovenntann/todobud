@@ -12,7 +12,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 openai.api_key = os.environ.get('OPENAI_API_KEY')
-model_engine = "gpt-4"
 
 system_text = '''
 Your a to-do app assistant and you need to follow these instruction:
@@ -42,6 +41,10 @@ Your a to-do app assistant and you need to follow these instruction:
 21. On deleting you should still return the todo data on JSON
 21. On Updating you should still return the todo data on JSON
 22. When updating notes do not delete the existing notes
+23. Respond with Encouraging message to finish my tasks
+24. You can also respond with Emoji
+25. Also add some tips related to the task
+26. When completing all the tasks you should still return it in the JSON
 
 
 Always and always Respond on this format:
@@ -99,7 +102,7 @@ def ask_assistant(question: str, todos: List[Todo]) -> dict:
     logging.info(f"question: {question}")
 
     openai_response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4",
         messages=[
             {"role": "user", "content": system},
         ]

@@ -53,99 +53,63 @@ class Profile(BaseModel):
 
 ```
 
-#### domain/stores/models/__init__.py
+#### domain/todos/models/__init__.py
 ```
-from .Store import Store
-
-```
-
-#### domain/stores/models/Store.py
-```
-from django.db import models
-from domain.commons.models.Base import BaseModel
-from django.contrib.auth.models import User
-
-
-import logging
-logger = logging.getLogger(__name__)
-
-
-class Store(BaseModel):
-
-    id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, related_name='stores', on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    contact_number = models.CharField(max_length=12, null=True, blank=True)
-    address = models.CharField(max_length=50, null=True, blank=True)
-
-    class Meta:
-        ordering = ['id']
-
-    def get_excerpt(self, char: int) -> str:
-        return self.address[:char]
-
-    def __str__(self):
-        return self.name
+from .Todo import Todo
 
 ```
 
-#### domain/products/models/__init__.py
-```
-from .Product import Product
-from .Category import Category
-
-```
-
-#### domain/products/models/Product.py
+#### domain/todos/models/Todo.py
 ```
 from django.db import models
 from domain.commons.models.Base import BaseModel
-from .Category import Category
-from domain.stores.models import Store
-
+from domain.guests.models.Guest import Guest
 
 import logging
+
 logger = logging.getLogger(__name__)
 
 
-class Product(BaseModel):
+class Todo(BaseModel):
 
     id = models.AutoField(primary_key=True)
-    # Relationship: Many-to-one
-    store = models.ForeignKey(Store, related_name='products', on_delete=models.CASCADE)
-    # Relationship: Many-to-many
-    categories = models.ManyToManyField(Category, related_name="products", blank=True)
+    guest = models.ForeignKey(Guest, related_name='todos', on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
-    description = models.CharField(max_length=250, null=True, blank=True)
+    status = models.CharField(max_length=10, choices=[('todo', 'To Do'), ('done', 'Done')], default='todo')
+    notes = models.TextField(null=True, blank=True)
+    due_date = models.DateField(null=True, blank=True)
 
     class Meta:
         ordering = ['id']
 
     def __str__(self):  # pragma: no cover
         return self.title
+
 ```
 
-#### domain/products/models/Category.py
+#### domain/guests/models/__init__.py
+```
+from .Guest import Guest
+
+```
+
+#### domain/guests/models/Guest.py
 ```
 from django.db import models
 from domain.commons.models.Base import BaseModel
-
 import logging
 
 logger = logging.getLogger(__name__)
 
 
-class Category(BaseModel):
+class Guest(BaseModel):
 
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
-    description = models.CharField(max_length=250, null=True, blank=True)
 
     class Meta:
         ordering = ['id']
-        verbose_name = 'category'
-        verbose_name_plural = 'categories'
 
     def __str__(self):  # pragma: no cover
-        return self.name
+        return str(self.id)
+
 ```
