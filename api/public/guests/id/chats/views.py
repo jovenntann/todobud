@@ -33,12 +33,10 @@ class GuestsIdChatsAPIView(APIView):
     )
     def post(request, guest_id):
 
-        todos = get_todos_by_guest_id(guest_id)
-
         chat_serializer = CreateChatSerializer(data=request.data)
         chat_serializer.is_valid(raise_exception=True)
         message = chat_serializer.validated_data.get('message', None)
-
+        todos = get_todos_by_guest_id(guest_id)
         openai_response = ask_assistant(question=message, todos=todos)
 
         openai_response_serializer = OpenAiResponseSerializer(data=openai_response)

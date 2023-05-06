@@ -13,7 +13,7 @@ class TodoSerializer(serializers.Serializer): # noqa
     id = serializers.IntegerField(allow_null=True, required=False)
     action = serializers.CharField(max_length=100)
     title = serializers.CharField(max_length=100)
-    status = serializers.CharField(max_length=10)
+    status = serializers.CharField(max_length=20)
     notes = serializers.CharField(max_length=500, allow_blank=True)
     due_date = serializers.DateField()
 

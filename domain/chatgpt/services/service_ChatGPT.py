@@ -2,11 +2,13 @@ import openai
 from typing import List
 
 import os
-
-import json
+import yaml
 
 # Models
 from domain.todos.models.Todo import Todo
+
+# Utils
+from domain.chatgpt.utils.utils import convert_todo_to_dict, convert_yaml_to_json
 
 import logging
 logger = logging.getLogger(__name__)
@@ -16,57 +18,55 @@ openai.api_key = os.environ.get('OPENAI_API_KEY')
 system_text = '''
 Your a to-do app assistant and you need to follow these instruction:
 
-0. Today is May 04, 2023
-1. Make a todo json (ID, Title, Status, Notes, Due Date) using this format:
-2. Status can be To-do and Done
-3. Default value of Status is To-do
-4. The Due date default value is today and in this format: yyyy-mm-dd
-5. You should be able to identify the correct status based on the word that I used
-6. Update the todo json based on our conversation
-7. Always include the json on your response
-8. You should only respond question related to todo app
-9. If the intent of the message is an action item consider it as a todo item
-10. If the intent of the message is an request item consider it as a todo item
-12. When responding with a list of items always and always respond with json format
-13. Only respond the JSON that was added 
-13. Only respond the JSON that was updated
-13. Only respond the jSON that was deleted
-14. If its added on the to-do item make the ID as null
-15. Only respond the JSON that is updated
-16. If its updating a to-do item respond with the ID
-17. In JSON use "todo" instead of "To-do"
-18. In JSON use "done" instead of "Done"
-19. In JSON include action on each todo item
-20. in JSON action could be read, create, update or delete
-21. On deleting you should still return the todo data on JSON
-21. On Updating you should still return the todo data on JSON
-22. When updating notes do not delete the existing notes
-23. Respond with Encouraging message to finish my tasks
-24. You can also respond with Emoji
-25. Also add some tips related to the task
-26. When completing all the tasks you should still return it in the JSON
+1. Today is May 06, 2023
+2. You should be able to identify the correct status based on the word that I used
+3. You should only respond question related to todo app
+4. If the intent of the message is an action item consider it as a todo item
+5. If the intent of the message is an request item consider it as a todo item
+6. Respond with Encouraging message to finish my tasks
+7. You can also respond with Emoji
+8. Also add some tips related to the task
+9. in Yaml only the include the item that was updated, created and deleted
+10. Todo status are: todo, in-progress and done
+11. When responding list of tasks you must respond in a sentence format
+
+Strictly respond on this format:
+
+START OF SAMPLE FORMAT
+```
+response: "Hello there how are you?"
+todos:
+  - id: null
+    action: create
+    title: "Make a Coffee"
+    status: todo
+    notes: "Brewed it properly"
+    due_date: "2023-05-04"
+  - id: 2
+    action: delete
+    title: "Jogging"
+    status: todo
+    notes: "for 30 minutes"
+    due_date: "2023-05-04"
+  - id: 3
+    action: "read"
+    title: "Cook Dinner"
+    status: todo
+    notes: Fresh foods
+    due_date: "2023-05-04"
+  - id: 4
+    action: update
+    title: "Review for the Exam"
+    status: done
+    notes: "Focus on English subject"
+    due_date: "2023-05-04"
+    
+response: "There are currently 9 total items in your to-do list. Keep up the good work! "
+todos: []
+```
 
 
-Always and always Respond on this format:
-
-{
-    "response": "Hello there how are you?",
-    "todos": [{
-      "id": 1,
-      "action": "create",
-      "title": "Example Task",
-      "status": "todo",
-      "notes": "This is an example task.",
-      "due_date": "2023-05-04"
-    }, {
-      "id": 2,
-      "action": "delete",
-      "title": "Example Task",
-      "status": "todo",
-      "notes": "This is an example task to delete",
-      "due_date": "2023-05-04"
-    }]
-}
+END OF SAMPLE FORMAT
 
 This is the current todos items:
 
@@ -75,28 +75,11 @@ This is the current todos items:
 before_question = "User Message: "
 
 
-def convert_string_to_json(input_string):
-    try:
-        json_data = json.loads(input_string)
-        return json_data
-    except json.JSONDecodeError:
-        return None
-
-
-def convert_todo_to_dict(todo: Todo) -> dict:
-    return {
-        "id": todo.id,
-        "title": todo.title,
-        "status": todo.status,
-        "notes": todo.notes,
-        "due_date": str(todo.due_date),
-    }
-
-
 def ask_assistant(question: str, todos: List[Todo]) -> dict:
-    todos_text = json.dumps([convert_todo_to_dict(todo) for todo in todos])
+    todos_dict_list = [convert_todo_to_dict(todo) for todo in todos]
+    todos_yaml = yaml.dump(todos_dict_list, default_flow_style=False)
 
-    system = system_text + todos_text + before_question + question
+    system = system_text + todos_yaml + before_question + question
 
     logging.info(f"system: {system}")
     logging.info(f"question: {question}")
@@ -113,7 +96,8 @@ def ask_assistant(question: str, todos: List[Todo]) -> dict:
     message = openai_response.choices[0].message.content
     logging.info(f"openai_response.message: {message}")
 
-    response = convert_string_to_json(message)
+    response = convert_yaml_to_json(message)
+
     logging.info("ask_assistant.response:")
     logging.info(response)
 
