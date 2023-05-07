@@ -46,17 +46,23 @@ class GuestsIdChatsAPIView(APIView):
             todo_id = todo_dict.get('id')
             action = todo_dict.get('action')
             title = todo_dict['title']
+            priority = todo_dict['priority']
             status = todo_dict['status']
             notes = todo_dict['notes']
             due_date = todo_dict['due_date']
+            duration = todo_dict['duration']
+            time_spent = todo_dict['time_spent']
 
             if action == "create":
                 create_todo_with_guest_id(
                     guest_id=guest_id,
                     title=title,
+                    priority=priority,
                     status=status,
                     notes=notes,
                     due_date=due_date,
+                    duration=duration,
+                    time_spent=time_spent
                 )
             if action == "update":
                 todo = get_todo_by_id(todo_id)
@@ -64,9 +70,12 @@ class GuestsIdChatsAPIView(APIView):
                     update_todo(
                         todo=todo,
                         title=title,
+                        priority=priority,
                         status=status,
                         notes=notes,
                         due_date=due_date,
+                        duration=duration,
+                        time_spent=time_spent
                     )
             if action == "delete":
                 todo = get_todo_by_id(todo_id)

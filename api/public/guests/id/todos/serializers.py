@@ -16,9 +16,12 @@ class ReadTodoSerializer(serializers.ModelSerializer):
             'id',
             'guest',
             'title',
+            'priority',
             'status',
             'notes',
             'due_date',
+            'duration',
+            'time_spent',
             'created_at',
             'updated_at'
         ]
@@ -32,9 +35,12 @@ class CreateTodoSerializer(serializers.ModelSerializer):
         fields = [
             'guest',
             'title',
+            'priority',
             'status',
             'notes',
-            'due_date'
+            'due_date',
+            'duration',
+            'time_spent'
         ]
 
 

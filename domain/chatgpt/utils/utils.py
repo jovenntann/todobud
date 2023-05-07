@@ -20,9 +20,12 @@ def convert_todo_to_dict(todo: Todo) -> dict:
     return {
         "id": todo.id,
         "title": todo.title,
+        "priority": todo.priority,
         "status": todo.status,
         "notes": todo.notes,
         "due_date": str(todo.due_date),
+        "duration": todo.duration,
+        "time_spent": todo.time_spent
     }
 
 

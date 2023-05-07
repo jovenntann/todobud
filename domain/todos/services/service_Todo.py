@@ -38,17 +38,23 @@ def delete_todo(todo: Todo) -> Todo:
 def create_todo(
         guest: Guest,
         title: str,
+        priority: str,
         status: str,
         notes: str = None,
-        due_date=None
+        due_date=None,
+        duration: int = 0,
+        time_spent: int = 0
 ) -> Todo:
 
     todo = Todo.objects.create(
         guest=guest,
         title=title,
+        priority=priority,
         status=status,
         notes=notes,
-        due_date=due_date
+        due_date=due_date,
+        duration=duration,
+        time_spent=time_spent,
     )
     todo.save()
 
@@ -60,17 +66,23 @@ def create_todo(
 def create_todo_with_guest_id(
         guest_id: int,
         title: str,
+        priority: str,
         status: str,
         notes: str = None,
-        due_date=None
+        due_date: int = None,
+        duration: int = None,
+        time_spent: int = None,
 ) -> Todo:
 
     todo = Todo.objects.create(
         guest_id=guest_id,
         title=title,
+        priority=priority,
         status=status,
         notes=notes,
-        due_date=due_date
+        due_date=due_date,
+        duration=duration,
+        time_spent=time_spent
     )
     todo.save()
 
@@ -82,14 +94,20 @@ def create_todo_with_guest_id(
 def update_todo(
         todo: Todo,
         title: str,
+        priority: str,
         status: str,
         notes: str = None,
-        due_date=None
+        due_date: int = None,
+        duration: int = None,
+        time_spent: int = None,
 ) -> Todo:
     todo.title = title
+    todo.priority = priority
     todo.status = status
     todo.notes = notes
     todo.due_date = due_date
+    todo.duration = duration
+    todo.time_spent = time_spent
     todo.updated_at = timezone.now()
 
     todo.save()
