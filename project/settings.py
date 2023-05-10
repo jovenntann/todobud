@@ -46,7 +46,7 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
-
+CSRF_TRUSTED_ORIGINS = env.list("ALLOWED_HOSTS")
 
 # To have an option to disable logging
 if '--no-logs' in sys.argv:
