@@ -2,6 +2,9 @@ from django.db import models
 from domain.commons.models.Base import BaseModel
 from domain.guests.models.Guest import Guest
 
+# Library: django-simple-history
+from simple_history.models import HistoricalRecords
+
 import logging
 
 logger = logging.getLogger(__name__)
@@ -31,6 +34,7 @@ class Todo(BaseModel):
     due_date = models.DateField(null=True, blank=True)
     duration = models.PositiveIntegerField(default=0, help_text="Duration in minutes")
     time_spent = models.PositiveIntegerField(default=0, help_text="Time spent in minutes")
+    history = HistoricalRecords()
 
     class Meta:
         ordering = ['id']

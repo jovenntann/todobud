@@ -78,7 +78,10 @@ INSTALLED_APPS = [
     'rest_framework',
     # Library: drf-yasg
     'drf_yasg',
+    # Library: Cors Header
     'corsheaders',
+    # Library: django-simple-history
+    'simple_history',
 ]
 
 MIDDLEWARE = [
@@ -92,6 +95,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # Library: django-log-request-id
     'log_request_id.middleware.RequestIDMiddleware',
+    # Library: django-simple-history
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'project.urls'

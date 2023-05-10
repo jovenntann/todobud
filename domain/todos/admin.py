@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Todo
+from simple_history.admin import SimpleHistoryAdmin
 
 
 class TodoAdmin(admin.ModelAdmin):
@@ -9,4 +10,9 @@ class TodoAdmin(admin.ModelAdmin):
     date_hierarchy = 'due_date'
 
 
-admin.site.register(Todo, TodoAdmin)
+class TodoHistoryAdmin(TodoAdmin, SimpleHistoryAdmin):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+admin.site.register(Todo, TodoHistoryAdmin)

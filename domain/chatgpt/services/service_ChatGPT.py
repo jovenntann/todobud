@@ -36,6 +36,7 @@ Your a to-do app assistant and you need to follow these instruction:
 15. Remove the duration on the title
 16. When responding use easy to understand remaining time
 17. When updating and deleting you must return those items in todos []
+18. in Yaml scape the quotes 
 
 Strictly respond on this format:
 
